@@ -1,7 +1,6 @@
 package cn.chenzw.auth.easy.core.examples;
 
 import cn.chenzw.auth.easy.core.core.AbstractEasyUserRegistration;
-import cn.chenzw.auth.easy.core.definition.UserRegistrationInfoDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

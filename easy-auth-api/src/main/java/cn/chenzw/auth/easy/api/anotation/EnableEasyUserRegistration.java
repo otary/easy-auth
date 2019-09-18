@@ -1,7 +1,6 @@
 package cn.chenzw.auth.easy.api.anotation;
 
 import cn.chenzw.auth.easy.api.config.EasyUserRegistrationConfig;
-import cn.chenzw.auth.easy.core.constants.UserRegistrationConstants;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 

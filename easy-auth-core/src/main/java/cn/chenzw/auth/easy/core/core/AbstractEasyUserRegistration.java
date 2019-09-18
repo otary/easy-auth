@@ -1,7 +1,5 @@
 package cn.chenzw.auth.easy.core.core;
 
-import cn.chenzw.auth.easy.core.constants.UserRegistrationConstants;
-import cn.chenzw.auth.easy.core.definition.UserRegistrationInfoDefinition;
 import cn.chenzw.auth.easy.core.exception.UserRegistioinException;
 import org.apache.commons.lang3.RandomStringUtils;
 

@@ -33,7 +33,7 @@ public class LoginTimesCacheHolder {
         if (counts == null) {
             counts = 0;
         }
-        cache.put(cacheKey, counts++);
+        cache.put(cacheKey, ++counts);
     }
 
     /**

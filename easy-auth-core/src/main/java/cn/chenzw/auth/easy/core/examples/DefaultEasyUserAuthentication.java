@@ -16,7 +16,6 @@ public class DefaultEasyUserAuthentication extends AbstractEasyUserAuthenticatio
 
     @Override
     public boolean checkUsernameAndPassword(UserAuthenticationDefinition userAuthenticationDefinition) {
-
         for (EasyUserDefinition memoeryUser : AuthenticationConstants.MEMOERY_USERS) {
             if (StringUtils.equals(memoeryUser.getUserName(), userAuthenticationDefinition.getUserName())
                     && StringUtils.equals(memoeryUser.getPassword(), userAuthenticationDefinition.getPwd())) {

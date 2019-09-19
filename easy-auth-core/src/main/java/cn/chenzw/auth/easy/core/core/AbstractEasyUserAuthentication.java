@@ -5,6 +5,7 @@ import cn.chenzw.auth.easy.core.constants.enums.AuthenticationExceptionContext;
 import cn.chenzw.auth.easy.core.definition.UserAuthenticationDefinition;
 import cn.chenzw.auth.easy.core.exception.AuthenticationException;
 import cn.chenzw.auth.easy.core.support.LoginTimesCacheHolder;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -42,6 +43,10 @@ public abstract class AbstractEasyUserAuthentication implements EasyUserAuthenti
      */
     protected boolean checkCaptcha() {
         UserAuthenticationDefinition userAuthenticationDefinition = getUserAuthenticationDefinition();
+
+        if (StringUtils.isEmpty(userAuthenticationDefinition.getCaptcha())) {
+            throw new AuthenticationException(AuthenticationExceptionContext.CAPTCHA_EMPTY);
+        }
 
         if (StringUtils.equalsIgnoreCase(userAuthenticationDefinition.getCaptcha(), userAuthenticationDefinition.getSessionCaptcha())) {
             return true;
@@ -98,6 +103,11 @@ public abstract class AbstractEasyUserAuthentication implements EasyUserAuthenti
 
     private void doLoginLockInternal() {
         throw new AuthenticationException(AuthenticationExceptionContext.LOGIN_LOCK);
+    }
+
+    @Override
+    public String randomCaptchaCode() {
+        return RandomStringUtils.randomAlphanumeric(4);
     }
 
     /**

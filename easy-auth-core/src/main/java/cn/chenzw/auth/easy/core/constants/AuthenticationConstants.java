@@ -16,7 +16,6 @@ public class AuthenticationConstants {
     private AuthenticationConstants() {
     }
 
-
     public static String USER_NAME_IDENTIFIER = "userName";
     public static String PASSWORD_IDENTIFIER = "pwd";
     public static String CAPTCHA_IDENTIFIER = "captcha";
@@ -27,9 +26,9 @@ public class AuthenticationConstants {
     public static Integer MAX_LOGIN_FALIED_TIMES = 3;
 
     /**
-     * 登录失败策略: 验证码、锁定
+     * 登录失败策略: captcha - 验证码、lock - 锁定N分钟
      */
-    public static String LOGIN_FAIL_STRATEGY = "111";
+    public static String LOGIN_FAIL_STRATEGY = "captcha";
 
     /**
      * 登录验证码
@@ -42,6 +41,7 @@ public class AuthenticationConstants {
      * 登录成功后跳转的URI
      */
     public static String LOGIN_SUCCESS_REDIRECT_URI = "/index";
+
 
     @Value("${easy.auth.username-identifier}")
     public void setUserNameIdentifier(String userNameIdentifier) {

@@ -3,6 +3,7 @@ package cn.chenzw.auth.easy.core.definition;
 
 import cn.chenzw.auth.easy.core.constants.AuthenticationConstants;
 import cn.chenzw.toolkit.http.HttpHolder;
+import cn.chenzw.toolkit.http.RequestUtils;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.ServletRequestUtils;
 
@@ -105,6 +106,16 @@ public class UserAuthenticationDefinition {
      */
     public String getSessionCaptcha() {
         return (String) request.getSession(true).getAttribute(AuthenticationConstants.LOGIN_CAPTCHA_SESSION);
+    }
+
+
+    /**
+     * 获取客户端IP
+     *
+     * @return
+     */
+    public String getClientIp() {
+        return RequestUtils.getClientIp(request);
     }
 
 }

@@ -2,12 +2,12 @@ package cn.chenzw.auth.easy.core.definition;
 
 
 import cn.chenzw.auth.easy.core.constants.AuthenticationConstants;
+import cn.chenzw.toolkit.http.HttpHolder;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.ServletRequestUtils;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 /**
@@ -18,14 +18,19 @@ import java.util.Map;
 public class UserAuthenticationDefinition {
 
     private HttpServletRequest request;
+    private HttpServletResponse response;
 
     public UserAuthenticationDefinition() {
-        this.request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        this.request = HttpHolder.getRequest();
+        this.response = HttpHolder.getResponse();
+
         this.init();
     }
 
-    public UserAuthenticationDefinition(HttpServletRequest request) {
+    public UserAuthenticationDefinition(HttpServletRequest request, HttpServletResponse response) {
         this.request = request;
+        this.response = response;
+
         this.init();
     }
 
@@ -86,6 +91,11 @@ public class UserAuthenticationDefinition {
 
     public HttpServletRequest getRequest() {
         return request;
+    }
+
+
+    public HttpServletResponse getResponse() {
+        return response;
     }
 
     /**

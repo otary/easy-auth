@@ -5,6 +5,7 @@ import cn.chenzw.auth.easy.core.definition.UserAuthenticationDefinition;
 import cn.chenzw.auth.easy.core.support.LoginTimesCacheHolder;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 抽象用户认证
@@ -54,13 +55,14 @@ public abstract class AbstractEasyUserAuthentication implements EasyUserAuthenti
     public void defaultHandler() {
         UserAuthenticationDefinition userAuthenticationDefinition = userAuthenticationDefinitionTL.get();
         HttpServletRequest request = userAuthenticationDefinition.getRequest();
+        HttpServletResponse response = userAuthenticationDefinition.getResponse();
 
         // 校验是否已登录失败超过次数
         if (checkLoginFailedTimes()) {
             if (checkUsernameAndPassword()) {
                 // 登录成功
-
                 LoginTimesCacheHolder.clearLoginTimes(request);
+
             } else {
                 // 登录失败
 

@@ -50,7 +50,9 @@ public abstract class AbstractEasyUserAuthentication implements EasyUserAuthenti
     public void defaultHandler() {
         if (checkLoginFailedTimes()) {
             if (checkUsernameAndPassword()) {
-
+                // 登录成功
+                UserAuthenticationDefinition userAuthenticationDefinition = userAuthenticationDefinitionTL.get();
+                loginTimesCacheHolder.clearLoginTimes(userAuthenticationDefinition.getRequest());
             }
         }
 

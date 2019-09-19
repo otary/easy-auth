@@ -8,26 +8,8 @@ package cn.chenzw.auth.easy.core.core;
 public interface EasyUserAuthentication {
 
     /**
-     * 检测登录失败次数
-     *
-     * @return
+     * 登录处理
      */
-    boolean checkLoginFailedTimes();
-
-    /**
-     * 登录校验
-     *
-     * @return
-     */
-    boolean checkUsernameAndPassword();
-
-
-    /**
-     * 校验验证码
-     *
-     * @return
-     */
-    boolean checkCaptcha();
-
+    void login();
 
 }

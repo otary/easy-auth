@@ -5,6 +5,7 @@ import cn.chenzw.auth.easy.core.constants.enums.AuthenticationExceptionContext;
 import cn.chenzw.auth.easy.core.definition.UserAuthenticationDefinition;
 import cn.chenzw.auth.easy.core.exception.AuthenticationException;
 import cn.chenzw.auth.easy.core.support.LoginTimesCacheHolder;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 抽象用户认证
@@ -25,23 +26,36 @@ public abstract class AbstractEasyUserAuthentication implements EasyUserAuthenti
 
     public abstract boolean checkUsernameAndPassword(UserAuthenticationDefinition userAuthenticationDefinition);
 
-    public abstract boolean checkCaptcha(UserAuthenticationDefinition userAuthenticationDefinition);
-
-
-    @Override
-    public boolean checkUsernameAndPassword() {
+    /**
+     * 登录校验
+     *
+     * @return
+     */
+    private boolean checkUsernameAndPassword() {
         return checkUsernameAndPassword(getUserAuthenticationDefinition());
     }
 
-    @Override
-    public boolean checkCaptcha() {
-        return checkCaptcha(getUserAuthenticationDefinition());
+    /**
+     * 校验验证码
+     *
+     * @return
+     */
+    protected boolean checkCaptcha() {
+        UserAuthenticationDefinition userAuthenticationDefinition = userAuthenticationDefinitionTL.get();
+
+        if (StringUtils.equalsIgnoreCase(userAuthenticationDefinition.getCaptcha(), userAuthenticationDefinition.getSessionCaptcha())) {
+            return true;
+        }
+        return false;
     }
 
-    @Override
-    public boolean checkLoginFailedTimes() {
-        UserAuthenticationDefinition userAuthenticationDefinition = userAuthenticationDefinitionTL.get();
-        int loginTimes = LoginTimesCacheHolder.getLoginTimes(userAuthenticationDefinition.getRequest());
+    /**
+     * 检测登录失败次数
+     *
+     * @return
+     */
+    protected boolean checkLoginFailedTimes() {
+        int loginTimes = LoginTimesCacheHolder.getLoginTimes(userAuthenticationDefinitionTL.get());
         if (loginTimes > AuthenticationConstants.MAX_LOGIN_FALIED_TIMES) {
             return false;
         }
@@ -49,14 +63,16 @@ public abstract class AbstractEasyUserAuthentication implements EasyUserAuthenti
     }
 
     private void incrementLoginTimes() {
-        LoginTimesCacheHolder.incrementLoginTimes(userAuthenticationDefinitionTL.get().getRequest());
+        LoginTimesCacheHolder.incrementLoginTimes(userAuthenticationDefinitionTL.get());
     }
 
     private void clearLoginTimes() {
-        LoginTimesCacheHolder.clearLoginTimes(userAuthenticationDefinitionTL.get().getRequest());
+        LoginTimesCacheHolder.clearLoginTimes(userAuthenticationDefinitionTL.get());
     }
 
-    // 登录逻辑
+    /**
+     * 登录逻辑
+     */
     private void doLoginInternal() {
         if (!checkUsernameAndPassword()) {
             // 登录失败
@@ -81,9 +97,9 @@ public abstract class AbstractEasyUserAuthentication implements EasyUserAuthenti
     }
 
     /**
-     * 默认处理器
+     * 默认处理
      */
-    public void defaultHandler() {
+    public void login() {
 
         // 校验是否已登录失败超过次数
         if (checkLoginFailedTimes()) {

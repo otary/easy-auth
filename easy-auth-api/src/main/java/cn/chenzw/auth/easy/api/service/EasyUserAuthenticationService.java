@@ -12,9 +12,7 @@ public class EasyUserAuthenticationService {
     EasyUserAuthentication easyUserAuthentication;
 
     public void login() {
-        if(){
-
-        }
+        easyUserAuthentication.login();
     }
 
 }

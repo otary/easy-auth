@@ -13,11 +13,6 @@ public class DefaultEasyUserAuthentication extends AbstractEasyUserAuthenticatio
 
     @Override
     public boolean checkUsernameAndPassword(UserAuthenticationDefinition userAuthenticationDefinition) {
-        return true;
-    }
-
-    @Override
-    public boolean checkCaptcha(UserAuthenticationDefinition userAuthenticationDefinition) {
-        return true;
+        return false;
     }
 }

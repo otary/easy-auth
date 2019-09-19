@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
- * 认证信息定义
+ * 认证信息封装
+ *
+ * @author chenzw
  */
 public class UserAuthenticationDefinition {
 
@@ -85,4 +87,14 @@ public class UserAuthenticationDefinition {
     public HttpServletRequest getRequest() {
         return request;
     }
+
+    /**
+     * 获取会话中的验证码
+     *
+     * @return
+     */
+    public String getSessionCaptcha() {
+        return (String) request.getSession(true).getAttribute(AuthenticationConstants.LOGIN_CAPTCHA_SESSION);
+    }
+
 }

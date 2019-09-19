@@ -10,15 +10,14 @@ import org.springframework.context.annotation.PropertySource;
  * @author chenzw
  */
 @Configuration
-@PropertySource(value = {"classpath:"}, ignoreResourceNotFound = true)
-public class AuthenticationConstants {
+@PropertySource(value = {"classpath:easy-auth.properties"}, ignoreResourceNotFound = true)
+public abstract class AuthenticationConstants {
 
-    private AuthenticationConstants() {
-    }
 
     public static String USER_NAME_IDENTIFIER = "userName";
     public static String PASSWORD_IDENTIFIER = "pwd";
     public static String CAPTCHA_IDENTIFIER = "captcha";
+    public static String REMEMBER_ME_IDENTIFIER = "rememberMe";
 
     /**
      * 最大登录失败次数
@@ -35,6 +34,9 @@ public class AuthenticationConstants {
      */
     public static final String LOGIN_CAPTCHA_SESSION = "LOGIN_CAPTCHA_SESSION";
 
+    /**
+     * 登录的URI
+     */
     public static String LOGIN_URI = "/login";
 
     /**
@@ -56,6 +58,11 @@ public class AuthenticationConstants {
     @Value("${easy.auth.captcha-identifier}")
     public void setCaptchaIdentifier(String captchaIdentifier) {
         CAPTCHA_IDENTIFIER = captchaIdentifier;
+    }
+
+    @Value("${easy.auth.remember-me-identifier}")
+    public void setRememberMeIdentifier(String rememberMeIdentifier) {
+        REMEMBER_ME_IDENTIFIER = rememberMeIdentifier;
     }
 
     @Value("${easy.auth.login-uri}")

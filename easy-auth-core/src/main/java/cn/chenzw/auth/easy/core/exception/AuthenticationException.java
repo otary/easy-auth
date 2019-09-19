@@ -20,8 +20,18 @@ public class AuthenticationException extends RuntimeException {
         this.msg = message;
     }
 
-    public AuthenticationException(AuthenticationExceptionContext exceptionContext) {
-        this.code = exceptionContext.getCode();
-        this.msg = exceptionContext.getMsg();
+    public AuthenticationException(AuthenticationExceptionContext aec) {
+        super(aec.getMsg());
+
+        this.code = aec.getCode();
+        this.msg = aec.getMsg();
+    }
+
+    public Integer getCode() {
+        return code;
+    }
+
+    public String getMsg() {
+        return msg;
     }
 }

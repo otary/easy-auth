@@ -2,8 +2,11 @@ package cn.chenzw.auth.easy.core.definition;
 
 
 import cn.chenzw.auth.easy.core.constants.AuthenticationConstants;
+import cn.chenzw.auth.easy.core.constants.enums.AuthenticationExceptionContext;
+import cn.chenzw.auth.easy.core.exception.AuthenticationException;
 import cn.chenzw.toolkit.http.HttpHolder;
 import cn.chenzw.toolkit.http.RequestUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.ServletRequestUtils;
 
@@ -39,8 +42,16 @@ public class UserAuthenticationDefinition {
         try {
             this.userName = ServletRequestUtils
                     .getStringParameter(request, AuthenticationConstants.USER_NAME_IDENTIFIER);
+            if (StringUtils.isEmpty(userName)) {
+                throw new AuthenticationException(AuthenticationExceptionContext.USERNAME_EMPTY);
+            }
+
             this.pwd = ServletRequestUtils.getStringParameter(request, AuthenticationConstants.PASSWORD_IDENTIFIER);
+            if (StringUtils.isEmpty(pwd)) {
+                throw new AuthenticationException(AuthenticationExceptionContext.PASSWORD_EMPTY);
+            }
             this.captcha = ServletRequestUtils.getStringParameter(request, AuthenticationConstants.CAPTCHA_IDENTIFIER);
+            this.rememberMe = ServletRequestUtils.getBooleanParameter(request, AuthenticationConstants.REMEMBER_ME_IDENTIFIER);
             this.extParams = request.getParameterMap();
         } catch (ServletRequestBindingException e) {
             e.printStackTrace();
@@ -70,6 +81,11 @@ public class UserAuthenticationDefinition {
      */
     private String captcha;
 
+    /**
+     * 记住
+     */
+    private Boolean rememberMe;
+
 
     public String getUserName() {
         return userName;
@@ -97,6 +113,10 @@ public class UserAuthenticationDefinition {
 
     public HttpServletResponse getResponse() {
         return response;
+    }
+
+    public Boolean getRememberMe() {
+        return rememberMe;
     }
 
     /**

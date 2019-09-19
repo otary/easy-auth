@@ -41,7 +41,7 @@ public abstract class AbstractEasyUserAuthentication implements EasyUserAuthenti
      * @return
      */
     protected boolean checkCaptcha() {
-        UserAuthenticationDefinition userAuthenticationDefinition = userAuthenticationDefinitionTL.get();
+        UserAuthenticationDefinition userAuthenticationDefinition = getUserAuthenticationDefinition();
 
         if (StringUtils.equalsIgnoreCase(userAuthenticationDefinition.getCaptcha(), userAuthenticationDefinition.getSessionCaptcha())) {
             return true;
@@ -55,7 +55,7 @@ public abstract class AbstractEasyUserAuthentication implements EasyUserAuthenti
      * @return
      */
     protected boolean checkLoginFailedTimes() {
-        int loginTimes = LoginTimesCacheHolder.getLoginTimes(userAuthenticationDefinitionTL.get());
+        int loginTimes = LoginTimesCacheHolder.getLoginTimes(getUserAuthenticationDefinition());
         if (loginTimes > AuthenticationConstants.MAX_LOGIN_FALIED_TIMES) {
             return false;
         }
@@ -63,11 +63,11 @@ public abstract class AbstractEasyUserAuthentication implements EasyUserAuthenti
     }
 
     private void incrementLoginTimes() {
-        LoginTimesCacheHolder.incrementLoginTimes(userAuthenticationDefinitionTL.get());
+        LoginTimesCacheHolder.incrementLoginTimes(getUserAuthenticationDefinition());
     }
 
     private void clearLoginTimes() {
-        LoginTimesCacheHolder.clearLoginTimes(userAuthenticationDefinitionTL.get());
+        LoginTimesCacheHolder.clearLoginTimes(getUserAuthenticationDefinition());
     }
 
     /**
@@ -77,6 +77,7 @@ public abstract class AbstractEasyUserAuthentication implements EasyUserAuthenti
         if (!checkUsernameAndPassword()) {
             // 登录失败
             incrementLoginTimes();
+
             throw new AuthenticationException(AuthenticationExceptionContext.ACCOUNT_OR_PWD_INVALID);
         }
 
@@ -85,6 +86,9 @@ public abstract class AbstractEasyUserAuthentication implements EasyUserAuthenti
     }
 
 
+    /**
+     * 带验证码的登录
+     */
     private void doLoginWithCaptchaInternal() {
         if (!checkCaptcha()) {
             throw new AuthenticationException(AuthenticationExceptionContext.CAPTCHA_INVALID);
@@ -100,19 +104,24 @@ public abstract class AbstractEasyUserAuthentication implements EasyUserAuthenti
      * 默认处理
      */
     public void login() {
-
+        System.out.println("-----------------1");
         // 校验是否已登录失败超过次数
         if (checkLoginFailedTimes()) {
+            System.out.println("-----------------2");
             doLoginInternal();
         } else {
+            System.out.println("-----------------3");
             // 登录失败超次数，则使用相应的策略
             if ("captcha".equalsIgnoreCase(AuthenticationConstants.LOGIN_FAIL_STRATEGY)) {
+                System.out.println("-----------------4");
                 // 验证码策略
                 doLoginWithCaptchaInternal();
             } else if ("lock".equalsIgnoreCase(AuthenticationConstants.LOGIN_FAIL_STRATEGY)) {
+                System.out.println("-----------------5");
                 // 锁定5分钟
                 doLoginLockInternal();
             }
+            System.out.println("-----------------6");
         }
     }
 }

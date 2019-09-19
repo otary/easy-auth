@@ -104,24 +104,18 @@ public abstract class AbstractEasyUserAuthentication implements EasyUserAuthenti
      * 默认处理
      */
     public void login() {
-        System.out.println("-----------------1");
         // 校验是否已登录失败超过次数
         if (checkLoginFailedTimes()) {
-            System.out.println("-----------------2");
             doLoginInternal();
         } else {
-            System.out.println("-----------------3");
             // 登录失败超次数，则使用相应的策略
             if ("captcha".equalsIgnoreCase(AuthenticationConstants.LOGIN_FAIL_STRATEGY)) {
-                System.out.println("-----------------4");
                 // 验证码策略
                 doLoginWithCaptchaInternal();
             } else if ("lock".equalsIgnoreCase(AuthenticationConstants.LOGIN_FAIL_STRATEGY)) {
-                System.out.println("-----------------5");
                 // 锁定5分钟
                 doLoginLockInternal();
             }
-            System.out.println("-----------------6");
         }
     }
 }

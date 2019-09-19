@@ -1,8 +1,13 @@
 package cn.chenzw.auth.easy.core.constants;
 
+import cn.chenzw.auth.easy.core.definition.EasyUserDefinition;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 登录认证常量
@@ -44,6 +49,11 @@ public abstract class AuthenticationConstants {
      */
     public static String LOGIN_SUCCESS_REDIRECT_URI = "/index";
 
+    /**
+     * 自定义内存帐号信息
+     */
+    public static List<EasyUserDefinition> MEMOERY_USERS = new ArrayList<>();
+
 
     @Value("${easy.auth.username-identifier}")
     public void setUserNameIdentifier(String userNameIdentifier) {
@@ -84,5 +94,14 @@ public abstract class AuthenticationConstants {
     public void setLoginSuccessRedirectUri(String loginSuccessRedirectUri) {
         LOGIN_SUCCESS_REDIRECT_URI = loginSuccessRedirectUri;
     }
+
+    @Value("${easy.auth.users[0]}:admin@@admin123")
+    public void setMemoeryUsers(List<String> users) {
+        for (String user : users) {
+            String[] userDetails = StringUtils.split("@@");
+            MEMOERY_USERS.add(new EasyUserDefinition(userDetails[0], userDetails[1]));
+        }
+    }
+
 
 }

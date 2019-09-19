@@ -21,6 +21,16 @@ public class AuthenticationConstants {
     public static String PASSWORD_IDENTIFIER = "pwd";
     public static String CAPTCHA_IDENTIFIER = "captcha";
 
+    /**
+     * 最大登录失败次数
+     */
+    public static Integer MAX_LOGIN_FALIED = 3;
+
+    /**
+     * 登录失败策略: 验证码、锁定
+     */
+    public static String LOGIN_FAIL_STRATEGY = "111";
+
     public static String LOGIN_URI = "/login";
 
     @Value("${easy.auth.username-identifier}")

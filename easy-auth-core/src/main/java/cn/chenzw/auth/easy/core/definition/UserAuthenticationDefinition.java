@@ -10,6 +10,9 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
+/**
+ * 认证信息定义
+ */
 public class UserAuthenticationDefinition {
 
     private HttpServletRequest request;
@@ -79,4 +82,7 @@ public class UserAuthenticationDefinition {
     }
 
 
+    public HttpServletRequest getRequest() {
+        return request;
+    }
 }

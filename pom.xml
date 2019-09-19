@@ -29,6 +29,7 @@
         <commons-collection4.version>4.1</commons-collection4.version>
         <druid.version>1.1.17</druid.version>
         <h2.version>1.4.199</h2.version>
+        <guava.version>20.0</guava.version>
         <swagger2.version>2.9.2</swagger2.version>
 
         <redis.version>2.1.6.RELEASE</redis.version>
@@ -127,6 +128,12 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-collections4</artifactId>
             <version>${commons-collection4.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
         </dependency>
 
         <dependency>

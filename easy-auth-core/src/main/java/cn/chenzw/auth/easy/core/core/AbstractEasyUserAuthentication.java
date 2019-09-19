@@ -1,6 +1,8 @@
 package cn.chenzw.auth.easy.core.core;
 
+import cn.chenzw.auth.easy.core.constants.AuthenticationConstants;
 import cn.chenzw.auth.easy.core.definition.UserAuthenticationDefinition;
+import cn.chenzw.auth.easy.core.support.LoginTimesCacheHolder;
 
 /**
  * 抽象用户认证
@@ -8,6 +10,8 @@ import cn.chenzw.auth.easy.core.definition.UserAuthenticationDefinition;
  * @author chenzw
  */
 public abstract class AbstractEasyUserAuthentication implements EasyUserAuthentication {
+
+    protected static LoginTimesCacheHolder loginTimesCacheHolder;
 
     private ThreadLocal<UserAuthenticationDefinition> userAuthenticationDefinitionTL = new ThreadLocal<>();
 
@@ -17,7 +21,6 @@ public abstract class AbstractEasyUserAuthentication implements EasyUserAuthenti
         }
         return userAuthenticationDefinitionTL.get();
     }
-
 
     public abstract boolean checkUsernameAndPassword(UserAuthenticationDefinition userAuthenticationDefinition);
 
@@ -31,11 +34,16 @@ public abstract class AbstractEasyUserAuthentication implements EasyUserAuthenti
 
     @Override
     public boolean checkCaptcha() {
-        return false;
+        return checkCaptcha(getUserAuthenticationDefinition());
     }
 
     @Override
-    public boolean check() {
-        return false;
+    public boolean checkLoginFailedTimes() {
+        UserAuthenticationDefinition userAuthenticationDefinition = userAuthenticationDefinitionTL.get();
+        int loginTimes = loginTimesCacheHolder.getLoginTimes(userAuthenticationDefinition.getRequest());
+        if (loginTimes > AuthenticationConstants.MAX_LOGIN_FALIED) {
+            return false;
+        }
+        return true;
     }
 }

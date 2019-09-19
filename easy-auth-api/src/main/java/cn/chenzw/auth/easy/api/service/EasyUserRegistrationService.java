@@ -1,7 +1,6 @@
 package cn.chenzw.auth.easy.api.service;
 
 import cn.chenzw.auth.easy.api.support.condition.MissingUserRegistrationService;
-import cn.chenzw.auth.easy.core.exception.UserRegistioinException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.stereotype.Service;

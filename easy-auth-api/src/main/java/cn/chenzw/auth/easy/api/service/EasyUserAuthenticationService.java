@@ -17,10 +17,10 @@ public class EasyUserAuthenticationService {
 
 
     @Autowired
-    EasyUserAuthentication easyUserAuthentication;
+    EasyUserAuthentication userAuthentication;
 
     public void login() {
-        easyUserAuthentication.login();
+        userAuthentication.login();
     }
 
     /**

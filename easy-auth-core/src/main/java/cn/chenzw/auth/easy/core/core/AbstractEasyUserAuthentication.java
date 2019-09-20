@@ -59,7 +59,8 @@ public abstract class AbstractEasyUserAuthentication implements EasyUserAuthenti
      *
      * @return
      */
-    protected boolean checkLoginFailedTimes() {
+    @Override
+    public boolean checkLoginFailedTimes() {
         int loginTimes = LoginTimesCacheHolder.getLoginTimes(getUserAuthenticationDefinition());
         if (loginTimes > EasyAuthenticationConstants.MAX_LOGIN_FALIED_TIMES) {
             return false;

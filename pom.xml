@@ -9,6 +9,7 @@
     <modules>
         <module>easy-auth-core</module>
         <module>easy-auth-api</module>
+        <module>easy-auth-ui</module>
     </modules>
 
     <properties>

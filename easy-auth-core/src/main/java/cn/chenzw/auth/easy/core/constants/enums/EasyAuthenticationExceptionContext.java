@@ -1,6 +1,6 @@
 package cn.chenzw.auth.easy.core.constants.enums;
 
-public enum AuthenticationExceptionContext {
+public enum EasyAuthenticationExceptionContext {
 
     LOGIN_LOCK(1, "帐号登录锁定,请5分钟后重试"),
     ACCOUNT_OR_PWD_INVALID(2, "用户名或密码不正确!"),
@@ -12,7 +12,7 @@ public enum AuthenticationExceptionContext {
     private Integer code;
     private String msg;
 
-    AuthenticationExceptionContext(Integer code, String msg) {
+    EasyAuthenticationExceptionContext(Integer code, String msg) {
         this.code = code;
         this.msg = msg;
     }

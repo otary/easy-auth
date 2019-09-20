@@ -1,9 +1,9 @@
 package cn.chenzw.auth.easy.core.core;
 
-import cn.chenzw.auth.easy.core.constants.AuthenticationConstants;
-import cn.chenzw.auth.easy.core.constants.enums.AuthenticationExceptionContext;
-import cn.chenzw.auth.easy.core.definition.UserAuthenticationDefinition;
-import cn.chenzw.auth.easy.core.exception.AuthenticationException;
+import cn.chenzw.auth.easy.core.constants.EasyAuthenticationConstants;
+import cn.chenzw.auth.easy.core.constants.enums.EasyAuthenticationExceptionContext;
+import cn.chenzw.auth.easy.core.definition.EasyUserAuthenticationDefinition;
+import cn.chenzw.auth.easy.core.exception.EasyAuthenticationException;
 import cn.chenzw.auth.easy.core.support.LoginTimesCacheHolder;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -16,16 +16,16 @@ import org.apache.commons.lang3.StringUtils;
 public abstract class AbstractEasyUserAuthentication implements EasyUserAuthentication {
 
 
-    private ThreadLocal<UserAuthenticationDefinition> userAuthenticationDefinitionTL = new ThreadLocal<>();
+    private ThreadLocal<EasyUserAuthenticationDefinition> userAuthenticationDefinitionTL = new ThreadLocal<>();
 
-    protected UserAuthenticationDefinition getUserAuthenticationDefinition() {
+    protected EasyUserAuthenticationDefinition getUserAuthenticationDefinition() {
         if (userAuthenticationDefinitionTL.get() == null) {
-            userAuthenticationDefinitionTL.set(new UserAuthenticationDefinition());
+            userAuthenticationDefinitionTL.set(new EasyUserAuthenticationDefinition());
         }
         return userAuthenticationDefinitionTL.get();
     }
 
-    public abstract boolean checkUsernameAndPassword(UserAuthenticationDefinition userAuthenticationDefinition);
+    public abstract boolean checkUsernameAndPassword(EasyUserAuthenticationDefinition easyUserAuthenticationDefinition);
 
     /**
      * 登录校验
@@ -42,13 +42,13 @@ public abstract class AbstractEasyUserAuthentication implements EasyUserAuthenti
      * @return
      */
     protected boolean checkCaptcha() {
-        UserAuthenticationDefinition userAuthenticationDefinition = getUserAuthenticationDefinition();
+        EasyUserAuthenticationDefinition easyUserAuthenticationDefinition = getUserAuthenticationDefinition();
 
-        if (StringUtils.isEmpty(userAuthenticationDefinition.getCaptcha())) {
-            throw new AuthenticationException(AuthenticationExceptionContext.CAPTCHA_EMPTY);
+        if (StringUtils.isEmpty(easyUserAuthenticationDefinition.getCaptcha())) {
+            throw new EasyAuthenticationException(EasyAuthenticationExceptionContext.CAPTCHA_EMPTY);
         }
 
-        if (StringUtils.equalsIgnoreCase(userAuthenticationDefinition.getCaptcha(), userAuthenticationDefinition.getSessionCaptcha())) {
+        if (StringUtils.equalsIgnoreCase(easyUserAuthenticationDefinition.getCaptcha(), easyUserAuthenticationDefinition.getSessionCaptcha())) {
             return true;
         }
         return false;
@@ -61,7 +61,7 @@ public abstract class AbstractEasyUserAuthentication implements EasyUserAuthenti
      */
     protected boolean checkLoginFailedTimes() {
         int loginTimes = LoginTimesCacheHolder.getLoginTimes(getUserAuthenticationDefinition());
-        if (loginTimes > AuthenticationConstants.MAX_LOGIN_FALIED_TIMES) {
+        if (loginTimes > EasyAuthenticationConstants.MAX_LOGIN_FALIED_TIMES) {
             return false;
         }
         return true;
@@ -83,7 +83,7 @@ public abstract class AbstractEasyUserAuthentication implements EasyUserAuthenti
             // 登录失败
             incrementLoginTimes();
 
-            throw new AuthenticationException(AuthenticationExceptionContext.ACCOUNT_OR_PWD_INVALID);
+            throw new EasyAuthenticationException(EasyAuthenticationExceptionContext.ACCOUNT_OR_PWD_INVALID);
         }
 
         // 登录成功
@@ -96,13 +96,13 @@ public abstract class AbstractEasyUserAuthentication implements EasyUserAuthenti
      */
     private void doLoginWithCaptchaInternal() {
         if (!checkCaptcha()) {
-            throw new AuthenticationException(AuthenticationExceptionContext.CAPTCHA_INVALID);
+            throw new EasyAuthenticationException(EasyAuthenticationExceptionContext.CAPTCHA_INVALID);
         }
         doLoginInternal();
     }
 
     private void doLoginLockInternal() {
-        throw new AuthenticationException(AuthenticationExceptionContext.LOGIN_LOCK);
+        throw new EasyAuthenticationException(EasyAuthenticationExceptionContext.LOGIN_LOCK);
     }
 
     @Override
@@ -119,10 +119,10 @@ public abstract class AbstractEasyUserAuthentication implements EasyUserAuthenti
             doLoginInternal();
         } else {
             // 登录失败超次数，则使用相应的策略
-            if ("captcha".equalsIgnoreCase(AuthenticationConstants.LOGIN_FAIL_STRATEGY)) {
+            if ("captcha".equalsIgnoreCase(EasyAuthenticationConstants.LOGIN_FAIL_STRATEGY)) {
                 // 验证码策略
                 doLoginWithCaptchaInternal();
-            } else if ("lock".equalsIgnoreCase(AuthenticationConstants.LOGIN_FAIL_STRATEGY)) {
+            } else if ("lock".equalsIgnoreCase(EasyAuthenticationConstants.LOGIN_FAIL_STRATEGY)) {
                 // 锁定5分钟
                 doLoginLockInternal();
             }

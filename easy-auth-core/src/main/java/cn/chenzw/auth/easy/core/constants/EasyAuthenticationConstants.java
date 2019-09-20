@@ -16,7 +16,7 @@ import java.util.List;
  */
 @Configuration
 @PropertySource(value = {"classpath:easy-auth.properties", "classpath*:application.properties"}, ignoreResourceNotFound = true)
-public class AuthenticationConstants {
+public class EasyAuthenticationConstants {
 
     private static final String DEFAULT_USER_NAME_IDENTIFIER = "userName";
     private static final String DEFAULT_PASSWORD_IDENTIFIER = "pwd";

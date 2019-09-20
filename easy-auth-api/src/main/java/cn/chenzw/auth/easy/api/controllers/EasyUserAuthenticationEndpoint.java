@@ -3,7 +3,10 @@ package cn.chenzw.auth.easy.api.controllers;
 import cn.chenzw.auth.easy.api.service.EasyUserAuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.io.IOException;
 
 
 @RestController
@@ -16,7 +19,7 @@ public class EasyUserAuthenticationEndpoint {
     /**
      * 登录入口
      */
-    @GetMapping("${easy.auth.login-uri}")
+    @PostMapping("${easy.auth.login-uri}")
     public void login() {
         userAuthenticationService.login();
     }
@@ -25,7 +28,7 @@ public class EasyUserAuthenticationEndpoint {
      * 获取验证码图片
      */
     @GetMapping("${easy.auth.captcha-uri}")
-    public void getCaptchaImage() {
-
+    public void getCaptchaImage() throws IOException {
+        userAuthenticationService.getCaptchaImage();
     }
 }

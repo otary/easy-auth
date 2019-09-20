@@ -1,9 +1,9 @@
 package cn.chenzw.auth.easy.core.definition;
 
 
-import cn.chenzw.auth.easy.core.constants.AuthenticationConstants;
-import cn.chenzw.auth.easy.core.constants.enums.AuthenticationExceptionContext;
-import cn.chenzw.auth.easy.core.exception.AuthenticationException;
+import cn.chenzw.auth.easy.core.constants.EasyAuthenticationConstants;
+import cn.chenzw.auth.easy.core.constants.enums.EasyAuthenticationExceptionContext;
+import cn.chenzw.auth.easy.core.exception.EasyAuthenticationException;
 import cn.chenzw.toolkit.http.HttpHolder;
 import cn.chenzw.toolkit.http.RequestUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -19,19 +19,19 @@ import java.util.Map;
  *
  * @author chenzw
  */
-public class UserAuthenticationDefinition {
+public class EasyUserAuthenticationDefinition {
 
     private HttpServletRequest request;
     private HttpServletResponse response;
 
-    public UserAuthenticationDefinition() {
+    public EasyUserAuthenticationDefinition() {
         this.request = HttpHolder.getRequest();
         this.response = HttpHolder.getResponse();
 
         this.init();
     }
 
-    public UserAuthenticationDefinition(HttpServletRequest request, HttpServletResponse response) {
+    public EasyUserAuthenticationDefinition(HttpServletRequest request, HttpServletResponse response) {
         this.request = request;
         this.response = response;
 
@@ -41,17 +41,17 @@ public class UserAuthenticationDefinition {
     private void init() {
         try {
             this.userName = ServletRequestUtils
-                    .getStringParameter(request, AuthenticationConstants.USER_NAME_IDENTIFIER);
+                    .getStringParameter(request, EasyAuthenticationConstants.USER_NAME_IDENTIFIER);
             if (StringUtils.isEmpty(userName)) {
-                throw new AuthenticationException(AuthenticationExceptionContext.USERNAME_EMPTY);
+                throw new EasyAuthenticationException(EasyAuthenticationExceptionContext.USERNAME_EMPTY);
             }
 
-            this.pwd = ServletRequestUtils.getStringParameter(request, AuthenticationConstants.PASSWORD_IDENTIFIER);
+            this.pwd = ServletRequestUtils.getStringParameter(request, EasyAuthenticationConstants.PASSWORD_IDENTIFIER);
             if (StringUtils.isEmpty(pwd)) {
-                throw new AuthenticationException(AuthenticationExceptionContext.PASSWORD_EMPTY);
+                throw new EasyAuthenticationException(EasyAuthenticationExceptionContext.PASSWORD_EMPTY);
             }
-            this.captcha = ServletRequestUtils.getStringParameter(request, AuthenticationConstants.CAPTCHA_IDENTIFIER);
-            this.rememberMe = ServletRequestUtils.getBooleanParameter(request, AuthenticationConstants.REMEMBER_ME_IDENTIFIER);
+            this.captcha = ServletRequestUtils.getStringParameter(request, EasyAuthenticationConstants.CAPTCHA_IDENTIFIER);
+            this.rememberMe = ServletRequestUtils.getBooleanParameter(request, EasyAuthenticationConstants.REMEMBER_ME_IDENTIFIER);
             this.extParams = request.getParameterMap();
         } catch (ServletRequestBindingException e) {
             e.printStackTrace();
@@ -125,7 +125,7 @@ public class UserAuthenticationDefinition {
      * @return
      */
     public String getSessionCaptcha() {
-        return (String) request.getSession(true).getAttribute(AuthenticationConstants.LOGIN_CAPTCHA_SESSION);
+        return (String) request.getSession(true).getAttribute(EasyAuthenticationConstants.LOGIN_CAPTCHA_SESSION);
     }
 
 

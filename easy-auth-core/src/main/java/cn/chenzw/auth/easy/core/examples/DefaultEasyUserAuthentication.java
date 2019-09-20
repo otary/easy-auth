@@ -1,9 +1,9 @@
 package cn.chenzw.auth.easy.core.examples;
 
-import cn.chenzw.auth.easy.core.constants.AuthenticationConstants;
+import cn.chenzw.auth.easy.core.constants.EasyAuthenticationConstants;
 import cn.chenzw.auth.easy.core.core.AbstractEasyUserAuthentication;
+import cn.chenzw.auth.easy.core.definition.EasyUserAuthenticationDefinition;
 import cn.chenzw.auth.easy.core.definition.EasyUserDefinition;
-import cn.chenzw.auth.easy.core.definition.UserAuthenticationDefinition;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -15,10 +15,10 @@ public class DefaultEasyUserAuthentication extends AbstractEasyUserAuthenticatio
 
 
     @Override
-    public boolean checkUsernameAndPassword(UserAuthenticationDefinition userAuthenticationDefinition) {
-        for (EasyUserDefinition memoeryUser : AuthenticationConstants.MEMOERY_USERS) {
-            if (StringUtils.equals(memoeryUser.getUserName(), userAuthenticationDefinition.getUserName())
-                    && StringUtils.equals(memoeryUser.getPassword(), userAuthenticationDefinition.getPwd())) {
+    public boolean checkUsernameAndPassword(EasyUserAuthenticationDefinition easyUserAuthenticationDefinition) {
+        for (EasyUserDefinition memoeryUser : EasyAuthenticationConstants.MEMOERY_USERS) {
+            if (StringUtils.equals(memoeryUser.getUserName(), easyUserAuthenticationDefinition.getUserName())
+                    && StringUtils.equals(memoeryUser.getPassword(), easyUserAuthenticationDefinition.getPwd())) {
                 return true;
             }
         }

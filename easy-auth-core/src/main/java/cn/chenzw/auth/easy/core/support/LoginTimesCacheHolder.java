@@ -1,6 +1,6 @@
 package cn.chenzw.auth.easy.core.support;
 
-import cn.chenzw.auth.easy.core.definition.UserAuthenticationDefinition;
+import cn.chenzw.auth.easy.core.definition.EasyUserAuthenticationDefinition;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import org.apache.commons.lang3.ObjectUtils;
@@ -25,10 +25,10 @@ public class LoginTimesCacheHolder {
     /**
      * 登录次数+1
      *
-     * @param userAuthenticationDefinition
+     * @param easyUserAuthenticationDefinition
      */
-    public static final void incrementLoginTimes(UserAuthenticationDefinition userAuthenticationDefinition) {
-        String cacheKey = generateCacheKey(userAuthenticationDefinition.getClientIp(), userAuthenticationDefinition.getUserName());
+    public static final void incrementLoginTimes(EasyUserAuthenticationDefinition easyUserAuthenticationDefinition) {
+        String cacheKey = generateCacheKey(easyUserAuthenticationDefinition.getClientIp(), easyUserAuthenticationDefinition.getUserName());
         Integer counts = cache.getIfPresent(cacheKey);
         if (counts == null) {
             counts = 0;
@@ -39,10 +39,10 @@ public class LoginTimesCacheHolder {
     /**
      * 清空登录次数
      *
-     * @param userAuthenticationDefinition
+     * @param easyUserAuthenticationDefinition
      */
-    public static final void clearLoginTimes(UserAuthenticationDefinition userAuthenticationDefinition) {
-        String cacheKey = generateCacheKey(userAuthenticationDefinition.getClientIp(), userAuthenticationDefinition.getUserName());
+    public static final void clearLoginTimes(EasyUserAuthenticationDefinition easyUserAuthenticationDefinition) {
+        String cacheKey = generateCacheKey(easyUserAuthenticationDefinition.getClientIp(), easyUserAuthenticationDefinition.getUserName());
         cache.invalidate(cacheKey);
     }
 
@@ -51,8 +51,8 @@ public class LoginTimesCacheHolder {
      *
      * @return
      */
-    public static final int getLoginTimes(UserAuthenticationDefinition userAuthenticationDefinition) {
-        String cacheKey = generateCacheKey(userAuthenticationDefinition.getClientIp(), userAuthenticationDefinition.getUserName());
+    public static final int getLoginTimes(EasyUserAuthenticationDefinition easyUserAuthenticationDefinition) {
+        String cacheKey = generateCacheKey(easyUserAuthenticationDefinition.getClientIp(), easyUserAuthenticationDefinition.getUserName());
         return ObjectUtils.defaultIfNull(cache.getIfPresent(cacheKey), 0);
     }
 }

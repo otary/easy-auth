@@ -9,6 +9,20 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>easy-auth-core</artifactId>
+    <artifactId>easy-auth-examples</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>cn.chenzw.auth</groupId>
+            <artifactId>easy-auth-api</artifactId>
+            <version>1.0.0.RELAESE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.chenzw.auth</groupId>
+            <artifactId>easy-auth-ui</artifactId>
+            <version>1.0.0.RELAESE</version>
+        </dependency>
+    </dependencies>
 
 </project>

@@ -32,10 +32,13 @@ public class EasyAuthenticationConstants {
      * 默认用户名和密码
      */
     private static final String DEFAULT_USER = "admin@@admin123";
+
     /**
      * 登录验证码会话Key
      */
     public static final String LOGIN_CAPTCHA_SESSION = "LOGIN_CAPTCHA_SESSION";
+
+    public static final String BASE_PACKAGE = "cn.chenzw.auth.easy";
 
 
     /**

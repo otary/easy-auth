@@ -2,7 +2,7 @@
   "name": "easy-auth-ui",
   "version": "1.0.0",
   "description": "简易认证前端UI",
-  "main": "index.js",
+  "main": "index.entry.js",
   "scripts": {
     "dev": "webpack-dev-server --config config/development/webpack.config.js",
     "prod": "webpack-dev-server --config config/production/webpack.config.js",

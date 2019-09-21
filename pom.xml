@@ -4,12 +4,13 @@
     <groupId>cn.chenzw.auth</groupId>
     <artifactId>easy-auth</artifactId>
     <packaging>pom</packaging>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0.RELAESE</version>
     <url>http://maven.apache.org</url>
     <modules>
         <module>easy-auth-core</module>
         <module>easy-auth-api</module>
         <module>easy-auth-ui</module>
+        <module>easy-auth-examples</module>
     </modules>
 
     <properties>

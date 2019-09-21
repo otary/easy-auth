@@ -1,6 +1,7 @@
 package cn.chenzw.auth.easy.core.support;
 
 import cn.chenzw.auth.easy.core.constants.EasyAuthenticationConstants;
+import org.springframework.http.HttpStatus;
 
 /**
  * 响应类
@@ -12,7 +13,8 @@ public class HttpResult {
     private Integer code;
     private String msg;
     private Boolean showCaptcha = Boolean.FALSE;
-    private String captchaUri;
+    private String captchaUri = "";
+    private String successRedirectUri = "";
 
     public HttpResult(Integer code, String msg) {
         this.code = code;
@@ -23,7 +25,18 @@ public class HttpResult {
         this.code = code;
         this.msg = msg;
         this.showCaptcha = showCaptcha;
-        this.captchaUri = EasyAuthenticationConstants.CAPTCHA_URI;
+
+        if (this.showCaptcha) {
+            this.captchaUri = EasyAuthenticationConstants.CAPTCHA_URI;
+        } else {
+            this.captchaUri = "";
+        }
+    }
+
+    public static HttpResult ok() {
+        HttpResult httpResult = new HttpResult(HttpStatus.OK.value(), "");
+        httpResult.setSuccessRedirectUri(EasyAuthenticationConstants.LOGIN_SUCCESS_REDIRECT_URI);
+        return httpResult;
     }
 
     public Integer getCode() {
@@ -56,6 +69,14 @@ public class HttpResult {
 
     public void setCaptchaUri(String captchaUri) {
         this.captchaUri = captchaUri;
+    }
+
+    public String getSuccessRedirectUri() {
+        return successRedirectUri;
+    }
+
+    public void setSuccessRedirectUri(String successRedirectUri) {
+        this.successRedirectUri = successRedirectUri;
     }
 
     @Override

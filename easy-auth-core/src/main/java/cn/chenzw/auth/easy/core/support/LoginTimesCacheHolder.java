@@ -4,6 +4,7 @@ import cn.chenzw.auth.easy.core.definition.EasyUserAuthenticationDefinition;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.concurrent.TimeUnit;
 
@@ -19,7 +20,12 @@ public class LoginTimesCacheHolder {
     private static final String CACHE_KEY = "%s@@%s";
 
     private static String generateCacheKey(String clientIp, String userName) {
-        return String.format(CACHE_KEY, clientIp, userName);
+        // return String.format(CACHE_KEY, clientIp, userName);
+
+        if (StringUtils.isEmpty(clientIp)) {
+            clientIp = "127.0.0.1";
+        }
+        return clientIp;
     }
 
     /**

@@ -19,11 +19,5 @@ public interface EasyUserAuthentication {
      */
     void login();
 
-    /**
-     * 生成随机验证码
-     *
-     * @return
-     */
-    String randomCaptchaCode();
 
 }

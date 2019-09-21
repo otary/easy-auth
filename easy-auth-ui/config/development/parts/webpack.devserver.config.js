@@ -38,7 +38,7 @@ module.exports = {
     proxy: {
         // 代理到后端服务接口
         "/api": {
-            target: "http://localhost:3000",
+            target: "http://localhost:8080",
             pathRewrite: {"^/api": ""}
         }
     }

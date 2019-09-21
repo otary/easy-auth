@@ -5,7 +5,6 @@ import cn.chenzw.auth.easy.core.constants.enums.EasyAuthenticationExceptionConte
 import cn.chenzw.auth.easy.core.definition.EasyUserAuthenticationDefinition;
 import cn.chenzw.auth.easy.core.exception.EasyAuthenticationException;
 import cn.chenzw.auth.easy.core.support.LoginTimesCacheHolder;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -15,14 +14,10 @@ import org.apache.commons.lang3.StringUtils;
  */
 public abstract class AbstractEasyUserAuthentication implements EasyUserAuthentication {
 
+    private EasyUserAuthenticationDefinition userAuthenticationDefinition;
 
-    private ThreadLocal<EasyUserAuthenticationDefinition> userAuthenticationDefinitionTL = new ThreadLocal<>();
-
-    protected EasyUserAuthenticationDefinition getUserAuthenticationDefinition() {
-        if (userAuthenticationDefinitionTL.get() == null) {
-            userAuthenticationDefinitionTL.set(new EasyUserAuthenticationDefinition());
-        }
-        return userAuthenticationDefinitionTL.get();
+    public AbstractEasyUserAuthentication() {
+        this.userAuthenticationDefinition = new EasyUserAuthenticationDefinition();
     }
 
     public abstract boolean checkUsernameAndPassword(EasyUserAuthenticationDefinition easyUserAuthenticationDefinition);
@@ -33,7 +28,7 @@ public abstract class AbstractEasyUserAuthentication implements EasyUserAuthenti
      * @return
      */
     private boolean checkUsernameAndPassword() {
-        return checkUsernameAndPassword(getUserAuthenticationDefinition());
+        return checkUsernameAndPassword(userAuthenticationDefinition);
     }
 
     /**
@@ -42,13 +37,11 @@ public abstract class AbstractEasyUserAuthentication implements EasyUserAuthenti
      * @return
      */
     protected boolean checkCaptcha() {
-        EasyUserAuthenticationDefinition easyUserAuthenticationDefinition = getUserAuthenticationDefinition();
-
-        if (StringUtils.isEmpty(easyUserAuthenticationDefinition.getCaptcha())) {
+        if (StringUtils.isEmpty(userAuthenticationDefinition.getCaptcha())) {
             throw new EasyAuthenticationException(EasyAuthenticationExceptionContext.CAPTCHA_EMPTY);
         }
 
-        if (StringUtils.equalsIgnoreCase(easyUserAuthenticationDefinition.getCaptcha(), easyUserAuthenticationDefinition.getSessionCaptcha())) {
+        if (StringUtils.equalsIgnoreCase(userAuthenticationDefinition.getCaptcha(), userAuthenticationDefinition.getSessionCaptcha())) {
             return true;
         }
         return false;
@@ -61,7 +54,7 @@ public abstract class AbstractEasyUserAuthentication implements EasyUserAuthenti
      */
     @Override
     public boolean checkLoginFailedTimes() {
-        int loginTimes = LoginTimesCacheHolder.getLoginTimes(getUserAuthenticationDefinition());
+        int loginTimes = LoginTimesCacheHolder.getLoginTimes(userAuthenticationDefinition);
         if (loginTimes > EasyAuthenticationConstants.MAX_LOGIN_FALIED_TIMES) {
             return false;
         }
@@ -69,11 +62,11 @@ public abstract class AbstractEasyUserAuthentication implements EasyUserAuthenti
     }
 
     private void incrementLoginTimes() {
-        LoginTimesCacheHolder.incrementLoginTimes(getUserAuthenticationDefinition());
+        LoginTimesCacheHolder.incrementLoginTimes(userAuthenticationDefinition);
     }
 
     private void clearLoginTimes() {
-        LoginTimesCacheHolder.clearLoginTimes(getUserAuthenticationDefinition());
+        LoginTimesCacheHolder.clearLoginTimes(userAuthenticationDefinition);
     }
 
     /**
@@ -104,11 +97,6 @@ public abstract class AbstractEasyUserAuthentication implements EasyUserAuthenti
 
     private void doLoginLockInternal() {
         throw new EasyAuthenticationException(EasyAuthenticationExceptionContext.LOGIN_LOCK);
-    }
-
-    @Override
-    public String randomCaptchaCode() {
-        return RandomStringUtils.randomAlphanumeric(4);
     }
 
     /**

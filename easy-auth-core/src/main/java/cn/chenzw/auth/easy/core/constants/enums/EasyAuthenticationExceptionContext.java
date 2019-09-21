@@ -6,6 +6,7 @@ public enum EasyAuthenticationExceptionContext {
     ACCOUNT_OR_PWD_INVALID(2, "用户名或密码不正确!"),
     CAPTCHA_INVALID(3, "验证码不正确!"),
     USERNAME_EMPTY(5, "用户名为空!"),
+    BODY_PARAM_EMPTY(444, "参数为空!"),
     PASSWORD_EMPTY(12, "密码为空!"),
     CAPTCHA_EMPTY(6, "验证码为空!");
 

@@ -13,7 +13,6 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class DefaultEasyUserAuthentication extends AbstractEasyUserAuthentication {
 
-
     @Override
     public boolean checkUsernameAndPassword(EasyUserAuthenticationDefinition easyUserAuthenticationDefinition) {
         for (EasyUserDefinition memoeryUser : EasyAuthenticationConstants.MEMOERY_USERS) {

@@ -6,12 +6,15 @@ import cn.chenzw.auth.easy.core.constants.enums.EasyAuthenticationExceptionConte
 import cn.chenzw.auth.easy.core.exception.EasyAuthenticationException;
 import cn.chenzw.toolkit.http.HttpHolder;
 import cn.chenzw.toolkit.http.RequestUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.web.bind.ServletRequestBindingException;
-import org.springframework.web.bind.ServletRequestUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Map;
 
 /**
@@ -24,9 +27,12 @@ public class EasyUserAuthenticationDefinition {
     private HttpServletRequest request;
     private HttpServletResponse response;
 
+    private ObjectMapper objectMapper;
+
     public EasyUserAuthenticationDefinition() {
         this.request = HttpHolder.getRequest();
         this.response = HttpHolder.getResponse();
+        this.objectMapper = new ObjectMapper();
 
         this.init();
     }
@@ -34,26 +40,32 @@ public class EasyUserAuthenticationDefinition {
     public EasyUserAuthenticationDefinition(HttpServletRequest request, HttpServletResponse response) {
         this.request = request;
         this.response = response;
+        this.objectMapper = new ObjectMapper();
 
         this.init();
     }
 
     private void init() {
         try {
-            this.userName = ServletRequestUtils
-                    .getStringParameter(request, EasyAuthenticationConstants.USER_NAME_IDENTIFIER);
-            if (StringUtils.isEmpty(userName)) {
-                throw new EasyAuthenticationException(EasyAuthenticationExceptionContext.USERNAME_EMPTY);
-            }
+            String body = IOUtils.toString(request.getInputStream(), Charset.defaultCharset());
+            if (!StringUtils.isEmpty(body)) {
+                Map<String, String> bodyMap = objectMapper.readValue(body, Map.class);
 
-            this.pwd = ServletRequestUtils.getStringParameter(request, EasyAuthenticationConstants.PASSWORD_IDENTIFIER);
-            if (StringUtils.isEmpty(pwd)) {
-                throw new EasyAuthenticationException(EasyAuthenticationExceptionContext.PASSWORD_EMPTY);
+                this.userName = MapUtils.getString(bodyMap, EasyAuthenticationConstants.USER_NAME_IDENTIFIER);
+                if (StringUtils.isEmpty(userName)) {
+                    throw new EasyAuthenticationException(EasyAuthenticationExceptionContext.USERNAME_EMPTY);
+                }
+
+                this.pwd = MapUtils.getString(bodyMap, EasyAuthenticationConstants.PASSWORD_IDENTIFIER);
+                if (StringUtils.isEmpty(pwd)) {
+                    throw new EasyAuthenticationException(EasyAuthenticationExceptionContext.PASSWORD_EMPTY);
+                }
+                this.captcha = MapUtils.getString(bodyMap, EasyAuthenticationConstants.CAPTCHA_IDENTIFIER);
+                this.rememberMe = MapUtils.getBoolean(bodyMap, EasyAuthenticationConstants.REMEMBER_ME_IDENTIFIER);
+
+                this.extParams = bodyMap;
             }
-            this.captcha = ServletRequestUtils.getStringParameter(request, EasyAuthenticationConstants.CAPTCHA_IDENTIFIER);
-            this.rememberMe = ServletRequestUtils.getBooleanParameter(request, EasyAuthenticationConstants.REMEMBER_ME_IDENTIFIER);
-            this.extParams = request.getParameterMap();
-        } catch (ServletRequestBindingException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -73,7 +85,7 @@ public class EasyUserAuthenticationDefinition {
     /**
      * 其余的请求参数
      */
-    private Map<String, String[]> extParams;
+    private Map<String, String> extParams;
 
 
     /**
@@ -96,7 +108,7 @@ public class EasyUserAuthenticationDefinition {
         return pwd;
     }
 
-    public Map<String, String[]> getExtParams() {
+    public Map<String, String> getExtParams() {
         return extParams;
     }
 
@@ -137,5 +149,6 @@ public class EasyUserAuthenticationDefinition {
     public String getClientIp() {
         return RequestUtils.getClientIp(request);
     }
+
 
 }

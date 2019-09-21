@@ -2,9 +2,11 @@ package cn.chenzw.auth.easy.api.service;
 
 import cn.chenzw.auth.easy.core.constants.EasyAuthenticationConstants;
 import cn.chenzw.auth.easy.core.core.EasyUserAuthentication;
+import cn.chenzw.auth.easy.core.support.HttpResult;
 import cn.chenzw.toolkit.authentication.support.CaptchaBuilders;
 import cn.chenzw.toolkit.http.HttpHolder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
@@ -37,6 +39,13 @@ public class EasyUserAuthenticationService {
 
         BufferedImage bufferedImage = CaptchaBuilders.createDefault().text(randomAlphanumeric).build();
         ImageIO.write(bufferedImage, "JPEG", HttpHolder.getResponse().getOutputStream());
+    }
+
+    public HttpResult checkCaptchaOn() {
+        if (userAuthentication.checkLoginFailedTimes()) {
+            return new HttpResult(HttpStatus.OK.value(), "");
+        }
+        return new HttpResult(HttpStatus.OK.value(), "", true);
     }
 
 }

@@ -40,6 +40,8 @@ public class EasyAuthenticationConstants {
 
     public static final String BASE_PACKAGE = "cn.chenzw.auth.easy";
 
+    public static final String DEFAULT_API_MAPPING = "/api/easy-auth";
+
 
     /**
      * 参数标识符

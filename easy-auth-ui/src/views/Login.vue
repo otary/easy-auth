@@ -40,7 +40,7 @@
 
 <script>
     import api from '../api';
-
+    import config from '../config';
 
     export default {
         name: "Login",
@@ -105,7 +105,7 @@
                 el.src = this.generateCaptchaUri();
             },
             generateCaptchaUri() {
-                return "/api" + this.captchaUri + "?t=" + (+new Date());
+                return config.apiMappingUri + this.captchaUri + "?t=" + (+new Date());
             }
 
         },

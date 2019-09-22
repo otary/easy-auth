@@ -42,7 +42,7 @@ module.exports = {
         // 代理到后端服务接口
         "/api": {
             target: "http://localhost:3000",
-            pathRewrite: {"^/api": ""}
+            // pathRewrite: {"^/api": ""}
         }
     }
 }
